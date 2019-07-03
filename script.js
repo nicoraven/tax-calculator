@@ -1,4 +1,3 @@
-let calculatedResult = 0;
 const input = document.querySelector("#input");
 const output = document.querySelector("#output");
 const brackets = [
@@ -29,13 +28,17 @@ const brackets = [
 ];
 
 function taxCalculator (input) {
-    input = convertIDR(input);
-
+    // input = convertIDR(input);
+    console.log("input", input);
     let monthlyIncome = parseFloat(input);
+    let calculatedResult = 0;
+
+    // check if input is NaN
     if (isNaN(monthlyIncome)) {
         calculatedResult = false;
     }
     else {
+        console.log("monthlyIncome", monthlyIncome);
         let annualIncome = monthlyIncome * 12;
         let foundMax = false;
         brackets.map(bracket => {
@@ -49,19 +52,18 @@ function taxCalculator (input) {
             };
         });
     };
-    console.log(calculatedResult);
+    console.log("calculated result", calculatedResult);
     return calculatedResult;
 };
 
 // converts period and commas if user inputs income in ID currency style
 function convertIDR (input) {
-    // input = input.replace(/\./g,"").replace(/,/g, ".");
     input = input.replace(/\./g,"").replace(/,/g, ".");
     return input;
 };
 
 function displayResult (tax) {
-    if (calculatedResult === false){
+    if (tax === false){
         output.innerHTML = "Please type in your monthly income without commas. \n eg. 123,456,789.98 => 123456789.98";
     }
     else {
@@ -71,10 +73,19 @@ function displayResult (tax) {
 }
 
 function inputHandler (event) {
-    calculatedResult = 0;
-    console.log(event.target.value);
-    let tax  = taxCalculator(event.target.value);
-    displayResult(tax);
+    // returns error if input format has commas eg. xxx,xxx.xx
+    if (event.target.value.includes(",")) {
+        let error = false;
+        displayResult(error);
+    }
+    else {
+        let result = taxCalculator(event.target.value);
+        displayResult(result);
+    };
+
+    // if we don't check for commas
+    // let output = taxCalculator(event.target.value);
+    // displayResult(output);
 
     // clear input
     event.target.value = "";
