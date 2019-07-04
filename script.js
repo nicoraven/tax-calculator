@@ -56,15 +56,20 @@ function taxCalculator (input) {
     return calculatedResult;
 };
 
-// converts period and commas if user inputs income in ID currency style
+// converts period and commas if user inputs income in ID currency style, or removes commas if SG style
 function convertIDR (input) {
-    input = input.replace(/\./g,"").replace(/,/g, ".");
+    // if input in IDR format
+    // input = input.replace(/\./g,"").replace(/,/g, ".");
+
+    // if input accepts commas
+    input = input.replace(/,/g, "");
+
     return input;
 };
 
 function displayResult (tax) {
     if (tax === false){
-        output.innerHTML = "Please type in your monthly income without commas. \n eg. 123,456,789.98 => 123456789.98";
+        output.innerHTML = "Please type in your monthly income without commas. <br/> eg. 123,456,789.98 => 123456789.98";
     }
     else {
         tax = tax.toLocaleString('id-ID', {currency: 'IDR', style: 'currency'});
@@ -74,18 +79,18 @@ function displayResult (tax) {
 
 function inputHandler (event) {
     // returns error if input format has commas eg. xxx,xxx.xx
-    if (event.target.value.includes(",")) {
-        let error = false;
-        displayResult(error);
-    }
-    else {
-        let result = taxCalculator(event.target.value);
-        displayResult(result);
-    };
+    // if (event.target.value.includes(",")) {
+    //     let error = false;
+    //     displayResult(error);
+    // }
+    // else {
+    //     let result = taxCalculator(event.target.value);
+    //     displayResult(result);
+    // };
 
     // if we don't check for commas
-    // let output = taxCalculator(event.target.value);
-    // displayResult(output);
+    let result = taxCalculator(event.target.value);
+    displayResult(result);
 
     // clear input
     event.target.value = "";
